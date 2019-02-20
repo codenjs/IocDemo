@@ -1,4 +1,5 @@
-﻿using IocDemo.Test.TestClasses;
+﻿using System.Reflection;
+using IocDemo.Test.TestClasses;
 using NUnit.Framework;
 
 namespace IocDemo.Test
@@ -9,7 +10,7 @@ namespace IocDemo.Test
         private T Get<T>(params object[] existingArguments)
         {
             var container = new IocContainer();
-            container.RegisterAllTypes();
+            container.RegisterAllTypes(Assembly.GetExecutingAssembly());
             return container.Get<T>(existingArguments);
         }
 

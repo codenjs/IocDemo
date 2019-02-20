@@ -16,7 +16,7 @@ public static class IocContainer
         if (_container == null)
         {
             _container = new IocDemo.IocContainer();
-            _container.RegisterAllTypes();
+            _container.RegisterAllTypes(Assembly.GetExecutingAssembly());
         }
 
         return _container.Get<T>(existingArguments);

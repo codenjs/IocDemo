@@ -10,12 +10,29 @@ namespace IocDemo
         private List<Type> _alltypes;
         private Dictionary<Type, object> _existingArgs;
 
-        public void RegisterAllTypes()
+        public void RegisterAllTypes(Assembly executingAssembly)
         {
-            _alltypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a => a.GetTypes())
-                .Where(t => !t.IsInterface)
-                .ToList();
+            _alltypes = new List<Type>();
+            LoadAllTypes(executingAssembly);
+            LoadAllTypes(executingAssembly.GetReferencedAssemblies());
+        }
+
+        private void LoadAllTypes(Assembly assembly)
+        {
+            foreach (var type in assembly.GetTypes())
+            {
+                if (!type.IsInterface)
+                    _alltypes.Add(type);
+            }
+        }
+
+        private void LoadAllTypes(AssemblyName[] assemblyNames)
+        {
+            foreach (var assemblyName in assemblyNames)
+            {
+                var assembly = Assembly.Load(assemblyName);
+                LoadAllTypes(assembly);
+            }
         }
 
         public T Get<T>(params object[] existingArguments)
