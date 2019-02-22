@@ -55,6 +55,16 @@ namespace IocDemo.Test
         }
 
         [Test]
+        public void Get_Class_With_String_Dependency()
+        {
+            var customMessage = "Custom Message";
+
+            var testClass = Get<ClassWithStringDependency>(customMessage);
+            var result = testClass.RunTest();
+            Assert.AreEqual("I have a message: Custom Message", result);
+        }
+
+        [Test]
         public void When_Existing_Object_Is_Provided_Then_Class_Is_Created_Using_Existing_Object_As_Dependency()
         {
             var existingObject = new Dependency1();
